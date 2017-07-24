@@ -6,7 +6,7 @@ using tgmod;
 
 namespace tgmod.Commands
 {
-    class DisplayRace : ModCommand
+    class DisplayFaction : ModCommand
     {
         public override string Command
         {
@@ -35,7 +35,7 @@ namespace tgmod.Commands
         public override void Action(CommandCaller caller, string input, string[] args)
         {
             tgplayer newPlayer = caller.Player.GetModPlayer<tgplayer>();
-            caller.Reply("You are a(n) " + RaceID.GetRaceName(newPlayer.playerRace) + ".");
+            caller.Reply("You are a(n) " + FactionID.GetFactionName(newPlayer.playerFaction) + ".");
         }
     }
 }

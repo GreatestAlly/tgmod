@@ -35,7 +35,7 @@ namespace tgmod.Commands
         public override void Action(CommandCaller caller, string input, string[] args)
         {
             tgplayer newPlayer = caller.Player.GetModPlayer<tgplayer>();
-            if (newPlayer.playerClass != ClassID.classless || newPlayer.playerQuirk != QuirkID.quirkless)
+            if (newPlayer.playerClass != ClassID.classless || newPlayer.playerGimmick != GimmickID.gimmickless)
             {
                 caller.Reply("You already have a class or a gimmick!");
                 return;
@@ -47,11 +47,11 @@ namespace tgmod.Commands
             {
                 newPlayer.playerClass = Main.rand.Next(1, ClassID.classMaxValue + 1);
             }
-            newPlayer.playerRace = Main.rand.Next(1, RaceID.raceMaxValue + 1);
-            newPlayer.playerQuirk = Main.rand.Next(1, QuirkID.quirkMaxValue + 1);
+            newPlayer.playerFaction = Main.rand.Next(1, FactionID.factionMaxValue + 1);
+            newPlayer.playerGimmick = Main.rand.Next(1, GimmickID.gimmickMaxValue + 1);
             caller.Reply("Your class is now " + ClassID.GetClassName(newPlayer.playerClass) + ".");
-            caller.Reply("You are a(n) " + RaceID.GetRaceName(newPlayer.playerRace) + ".");
-            caller.Reply("You " + QuirkID.GetQuirkName(newPlayer.playerQuirk) + ".");
+            caller.Reply("You are a(n) " + FactionID.GetFactionName(newPlayer.playerFaction) + ".");
+            caller.Reply("You " + GimmickID.GetGimmickName(newPlayer.playerGimmick) + ".");
         }
     }
 }

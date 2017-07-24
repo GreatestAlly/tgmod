@@ -8,7 +8,7 @@ namespace tgmod.Items
     {
         public override bool CanEquipAccessory(Item item, Player player, int slot)
         {
-            if (player.GetModPlayer<tgplayer>().playerRace == RaceID.dwarf)
+            if (player.GetModPlayer<tgplayer>().playerFaction == FactionID.dwarf)
             {
                 if (item.wingSlot > 0)
                 {

@@ -6,7 +6,7 @@ using tgmod;
 
 namespace tgmod.Commands
 {
-    class RaceRoll : ModCommand
+    class Rerolling : ModCommand
     {
         public override string Command
         {
@@ -36,6 +36,7 @@ namespace tgmod.Commands
         {
 
             caller.Player.KillMe(Terraria.DataStructures.PlayerDeathReason.ByCustomReason(caller.Player.name + "rerolled :^)"), 9999, 0);
+            caller.Player.KillMeForGood();
             /*
             tgplayer newPlayer = caller.Player.GetModPlayer<tgplayer>();
             if (newPlayer.playerRace != RaceID.human)

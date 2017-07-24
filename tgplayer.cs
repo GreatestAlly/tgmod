@@ -11,8 +11,8 @@ namespace tgmod
         public static float damageLoss = 0.5f;
         public static float damageBoost = 0.55f;
         public int playerClass = ClassID.classless;
-        public int playerQuirk = QuirkID.quirkless;
-        public int playerRace = RaceID.human;
+        public int playerGimmick = GimmickID.gimmickless;
+        public int playerFaction = FactionID.human;
         public int extraFishingLines = 0;
         public bool multicultured = false;
 
@@ -27,16 +27,16 @@ namespace tgmod
             return new TagCompound
             {
                 {"class", playerClass },
-                {"quirk", playerQuirk },
-                {"race", playerRace }
+                {"gimmick", playerGimmick },
+                {"race", playerFaction }
             };
         }
 
         public override void Load(TagCompound tag)
         {
             playerClass = tag.GetInt("class");
-            playerQuirk = tag.GetInt("quirk");
-            playerRace = tag.GetInt("race");
+            playerGimmick = tag.GetInt("gimmick");
+            playerFaction = tag.GetInt("faction");
         }
 
         public override void PostUpdateEquips()
@@ -95,7 +95,7 @@ namespace tgmod
                 return;
             }
 
-            if (playerQuirk == QuirkID.vampire)
+            if (playerGimmick == GimmickID.vampire)
             {
                 /*
                 Main.NewText("player zoneunderworldheight " + player.ZoneUnderworldHeight);
@@ -112,7 +112,7 @@ namespace tgmod
                     }
                 }
             }
-            if (playerQuirk == QuirkID.aquaphobia)
+            if (playerGimmick == GimmickID.aquaphobia)
             {
                 player.breathMax = 10;
                 if (player.wet)
@@ -127,7 +127,7 @@ namespace tgmod
                     }
                 }
             }
-            if (playerQuirk == QuirkID.hermit)
+            if (playerGimmick == GimmickID.hermit)
             {
                 int nearbyPlayerCount = 0;
                 foreach (Player p in Main.player)
@@ -145,7 +145,7 @@ namespace tgmod
                     if (!player.buffImmune[BuffID.Wet]) player.AddBuff(BuffID.Wet, 5);
                 }
             }
-            if (playerQuirk == QuirkID.claustrophobia)
+            if (playerGimmick == GimmickID.claustrophobia)
             {
                 if (player.behindBackWall)
                 {
@@ -155,7 +155,7 @@ namespace tgmod
             }
 
 
-            if (playerRace == RaceID.dwarf && !player.ZoneDungeon)
+            if (playerFaction == FactionID.dwarf && !player.ZoneDungeon)
             {
                 if (player.ZoneOverworldHeight)
                 {
@@ -170,7 +170,7 @@ namespace tgmod
                     if (!player.buffImmune[BuffID.Slow]) player.AddBuff(BuffID.Slow, 5);
                 }
             }
-            if (playerRace == RaceID.elf && !player.ZoneJungle && !player.ZoneDungeon)
+            if (playerFaction == FactionID.elf && !player.ZoneJungle && !player.ZoneDungeon)
             {
                 if (player.ZoneDirtLayerHeight)
                 {
@@ -241,18 +241,18 @@ namespace tgmod
         }
     }
 
-    class QuirkID
+    class GimmickID
     {
-        public const short quirkless = 0;
+        public const short gimmickless = 0;
         public const short vampire = 1;
         public const short aquaphobia = 2;
         public const short hermit = 3;
         public const short claustrophobia = 4;
-        public const short quirkMaxValue = 4;
+        public const short gimmickMaxValue = 4;
 
-        public static string GetQuirkName(int playerQuirk)
+        public static string GetGimmickName(int playerGimmick)
         {
-            switch (playerQuirk)
+            switch (playerGimmick)
             {
                 case 1:
                     return "are a vampire";
@@ -268,16 +268,16 @@ namespace tgmod
         }
     }
 
-    class RaceID
+    class FactionID
     {
         public const short human = 0;
         public const short elf = 1;
         public const short dwarf = 2;
-        public const short raceMaxValue = 2;
+        public const short factionMaxValue = 2;
         
-        public static string GetRaceName(int playerRace)
+        public static string GetFactionName(int playerFaction)
         {
-            switch (playerRace)
+            switch (playerFaction)
             {
                 case 1:
                     return "elf";

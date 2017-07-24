@@ -6,7 +6,7 @@ using tgmod;
 
 namespace tgmod.Commands
 {
-    class DisplayQuirk : ModCommand
+    class DisplayGimmick : ModCommand
     {
         public override string Command
         {
@@ -35,7 +35,7 @@ namespace tgmod.Commands
         public override void Action(CommandCaller caller, string input, string[] args)
         {
             tgplayer newPlayer = caller.Player.GetModPlayer<tgplayer>();
-            caller.Reply("Your gimmick is that you " + QuirkID.GetQuirkName(newPlayer.playerQuirk) + ".");
+            caller.Reply("Your gimmick is that you " + GimmickID.GetGimmickName(newPlayer.playerGimmick) + ".");
         }
     }
 }
