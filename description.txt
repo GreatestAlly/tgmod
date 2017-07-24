@@ -1,0 +1,76 @@
+/tg/ mod 
+
+Mod ideas from /tg/. 
+
+Remove the Wand items that place blocks and just have the blocks be craftable holy shit why even bother making a Bone Wand and then mining the placed bones gives you Bone Blocks just have the blocks themselves
+Crafting recipes would be as simple as
+Wood > Living Wood Block
+Wood > Living Leaf Block
+Rich Mahogany > Living Mahogany Block
+Rich Mahogany > Living Mahogany Leaf Block
+Bone > Bone Block
+
+
+Remove light given off by teleporters
+
+Extra Fishing Lines x1/x2/x4/x9/x19
+
+Version History:
+
+<v0.3.7.2>
+Removed debug commands. 
+
+<v0.3.7.1>
+Now allows spaces to be inserted in the newname command.
+Fixed healer damage (sort of). 
+
+<v0.3.7.0>
+New command to change character name.
+Dwarves can only use a select number of wings. 
+Reduced life regen reduction of aquaphobes while wet. 
+Made pirate maps stack to 99. 
+Rerolling has been removed. 
+
+<v0.3.6.2>
+Fixed aquaphobes drowning with gills potion/accessories that allow underwater breathing.
+
+<v0.3.6.1>
+Fixed the potion's rarity.
+
+<v0.3.6>
+Added a potion that removes the effects of gimmick/faction for a limited amount of time. 
+
+<v0.3.5>
+Debuffs checked for buff immunity before being applied. 
+Aquaphobes are only chilled when in the rain. 
+Reduced elven debuffs. 
+
+<v0.3.4>
+Fixed duplicate command names and other issues. 
+
+<v0.3.3>
+Dwarf and Elf are now implemented independent of gimmicks. 
+
+<v0.3.2>
+Fixed damage modifiers for ranged classes. 
+
+<v0.3.1>
+Classes cannot be rerolled. 
+
+<v0.3.0>
+Added classes and gimmick for characters. 
+
+<v0.2.5>
+Living Leaf drops no longer override drops from other mods/vanilla.
+
+<v0.2.4>
+Fixed a crafting bug with the extra lines items.
+
+<v0.2.3>
+Extra chat line reverted to all npcs instead of just party girl. 
+It's not a bug, it's a feature :^)
+
+<v0.2.2>
+Fixed bugs with living wood/leaf block drops. 
+
+Item frames can no longer be placed next to doors and trapdoors. 
