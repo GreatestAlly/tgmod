@@ -32,7 +32,7 @@ namespace tgmod.Items.Placeable
         {
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.SunplateBlock, 50);
-            recipe.AddIngredient(ItemID.Hellstone, 50);
+            recipe.AddIngredient(ItemID.HellstoneBrick, 50);
             recipe.AddTile(TileID.SkyMill);
             recipe.AddTile(TileID.Hellforge);
             recipe.AddRecipe();

@@ -101,6 +101,7 @@ namespace tgmod
                     if (!player.buffImmune[BuffID.Blackout]) player.AddBuff(BuffID.Blackout, 5);
                     if (!player.buffImmune[BuffID.Bleeding]) player.AddBuff(BuffID.Bleeding, 5);
                     if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
+                    if (!player.buffImmune[BuffID.Poisoned]) player.AddBuff(BuffID.Poisoned, 5);
                 }
                 else if (player.ZoneUnderworldHeight)
                 {

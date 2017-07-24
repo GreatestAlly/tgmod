@@ -47,7 +47,19 @@ namespace tgmod.Commands
             {
                 newPlayer.playerClass = Main.rand.Next(1, ClassID.classMaxValue + 1);
             }
-            newPlayer.playerFaction = Main.rand.Next(1, FactionID.factionMaxValue + 1);
+
+            if (args[0] == "elf")
+            {
+                newPlayer.playerFaction = FactionID.elf;
+            }
+            else if (args[0] == "dwarf")
+            {
+                newPlayer.playerFaction = FactionID.dwarf;
+            }
+            else
+            {
+                newPlayer.playerFaction = Main.rand.Next(1, FactionID.factionMaxValue + 1);
+            }
             newPlayer.playerGimmick = Main.rand.Next(1, GimmickID.gimmickMaxValue + 1);
             caller.Reply("Your class is now " + ClassID.GetClassName(newPlayer.playerClass) + ".");
             caller.Reply("You are a(n) " + FactionID.GetFactionName(newPlayer.playerFaction) + ".");
