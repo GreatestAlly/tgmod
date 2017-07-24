@@ -34,18 +34,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Commands\DisplayClass.cs" />
-    <Compile Include="Commands\DisplayQuirk.cs" />
-    <Compile Include="Commands\DisplayRace.cs" />
+    <Compile Include="Commands\DisplayGimmick.cs" />
+    <Compile Include="Commands\DisplayFaction.cs" />
     <Compile Include="Commands\NewName.cs" />
-    <Compile Include="Commands\RaceRoll.cs" />
+    <Compile Include="Commands\Rerolling.cs" />
     <Compile Include="Commands\RollingCommand.cs" />
+    <Compile Include="ElvenBlessing.cs" />
     <Compile Include="Items\Armor\ExtraLine.cs" />
     <Compile Include="Items\Armor\ExtraLine19.cs" />
     <Compile Include="Items\Armor\ExtraLine2.cs" />
     <Compile Include="Items\Armor\ExtraLine4.cs" />
     <Compile Include="Items\Armor\ExtraLine9.cs" />
     <Compile Include="Items\DwarfFactionHelper.cs" />
-    <Compile Include="Items\ElfFactionHelper.cs" />
     <Compile Include="Items\ExtraLinesHelper.cs" />
     <Compile Include="Items\MeleeClassHelper.cs" />
     <Compile Include="Items\PirateMapStacking.cs" />
@@ -57,11 +57,10 @@
     <Compile Include="NPCs\PartyGirl.cs" />
     <Compile Include="tgmod.cs" />
     <Compile Include="tgplayer.cs" />
-    <Compile Include="Tiles\Candle.cs" />
+    <Compile Include="Tiles\ElfFactionHelper.cs" />
     <Compile Include="Tiles\ItemFrameServerCheat.cs" />
     <Compile Include="Tiles\LivingMahogany.cs" />
     <Compile Include="Tiles\LivingWood.cs" />
-    <Compile Include="Tiles\Teleporter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">

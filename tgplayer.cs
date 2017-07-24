@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -15,10 +17,14 @@ namespace tgmod
         public int playerFaction = FactionID.human;
         public int extraFishingLines = 0;
         public bool multicultured = false;
+        public bool inNeutralZone = false;
+        public bool elvenBlessing = false;
 
         public override void ResetEffects()
         {
             multicultured = false;
+            inNeutralZone = false;
+            elvenBlessing = false;
             extraFishingLines = 0;
         }
 
@@ -27,7 +33,7 @@ namespace tgmod
             return new TagCompound
             {
                 {"class", playerClass },
-                {"gimmick", playerGimmick },
+                {"quirk", playerGimmick }, // still using old names because it would break saves
                 {"race", playerFaction }
             };
         }
@@ -35,11 +41,80 @@ namespace tgmod
         public override void Load(TagCompound tag)
         {
             playerClass = tag.GetInt("class");
-            playerGimmick = tag.GetInt("gimmick");
-            playerFaction = tag.GetInt("faction");
+            playerGimmick = tag.GetInt("quirk");
+            playerFaction = tag.GetInt("race");
         }
 
         public override void PostUpdateEquips()
+        {
+            ZoneUpdates();
+            ClassDamageModifications();
+            GimmickUpdates();
+            FactionUpdates();
+        }
+
+        private void ZoneUpdates()
+        {
+            if (player.position.Y > Main.spawnTileY * 16 - 50 * 16 && Math.Abs(player.position.X - Main.spawnTileX * 16) < 80 * 16)
+            {
+                inNeutralZone = true;
+            }
+            if (player.ZoneDungeon)
+            {
+                inNeutralZone = true;
+            }
+        }
+
+        private void FactionUpdates()
+        {
+            if (multicultured || inNeutralZone)
+            {
+                return;
+            }
+
+            if (playerFaction == FactionID.dwarf)
+            {
+                if (player.ZoneOverworldHeight)
+                {
+                    if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
+                    if (!player.buffImmune[BuffID.Confused]) player.AddBuff(BuffID.Confused, 5);
+                    if (!player.buffImmune[BuffID.Slow]) player.AddBuff(BuffID.Slow, 5);
+                    if (!player.buffImmune[BuffID.Bleeding]) player.AddBuff(BuffID.Bleeding, 5);
+                    if (!player.buffImmune[BuffID.Poisoned]) player.AddBuff(BuffID.Poisoned, 5);
+                }
+                if (player.ZoneSkyHeight)
+                {
+                    if (!player.buffImmune[BuffID.Suffocation]) player.AddBuff(BuffID.Suffocation, 5);
+                    if (!player.buffImmune[BuffID.Slow]) player.AddBuff(BuffID.Slow, 5);
+                }
+            }
+            if (playerFaction == FactionID.elf && !elvenBlessing)
+            {
+                if (player.ZoneDirtLayerHeight)
+                {
+                    if (!player.buffImmune[BuffID.Darkness]) player.AddBuff(BuffID.Darkness, 5);
+                    if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
+                    if (!player.buffImmune[BuffID.Poisoned]) player.AddBuff(BuffID.Poisoned, 5);
+                }
+                else if (player.ZoneRockLayerHeight)
+                {
+                    if (!player.buffImmune[BuffID.Blackout]) player.AddBuff(BuffID.Blackout, 5);
+                    if (!player.buffImmune[BuffID.Bleeding]) player.AddBuff(BuffID.Bleeding, 5);
+                    if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
+                }
+                else if (player.ZoneUnderworldHeight)
+                {
+                    if (!player.buffImmune[BuffID.Horrified]) player.AddBuff(BuffID.Horrified, 5);
+                    if (!player.buffImmune[BuffID.Bleeding]) player.AddBuff(BuffID.Bleeding, 5);
+                    if (!player.fireWalk)
+                    {
+                        player.AddBuff(BuffID.Burning, 5);
+                    }
+                }
+            }
+        }
+
+        private void ClassDamageModifications()
         {
             // first deal with classes and the damage buffs/debuffs that come with them
             if (playerClass != ClassID.classless)
@@ -88,114 +163,82 @@ namespace tgmod
                     player.magicDamage += damageLoss;
                 }
             }
-
-            // quirks are dealt with here 
-            if (multicultured)
-            {
-                return;
-            }
-
-            if (playerGimmick == GimmickID.vampire)
-            {
-                /*
-                Main.NewText("player zoneunderworldheight " + player.ZoneUnderworldHeight);
-                Main.NewText("player zonerocklayerheight " + player.ZoneRockLayerHeight);
-                Main.NewText("player zonedirtlayerheight " + player.ZoneDirtLayerHeight);
-                Main.NewText("player zoneoverworldheight " + player.ZoneOverworldHeight);
-                Main.NewText("player zoneskylayerheight" + player.ZoneSkyHeight);
-                */
-                if (!player.behindBackWall && Main.dayTime && player.ZoneOverworldHeight && !player.ZoneRain && !Main.eclipse)
-                {
-                    if (!player.buffImmune[BuffID.OnFire])
-                    {
-                        player.AddBuff(BuffID.OnFire, 5);
-                    }
-                }
-            }
-            if (playerGimmick == GimmickID.aquaphobia)
-            {
-                player.breathMax = 10;
-                if (player.wet)
-                {
-                    player.lifeRegen = -5;
-                }
-                if (player.ZoneRain && player.ZoneOverworldHeight)
-                {
-                    if (!player.buffImmune[BuffID.Chilled])
-                    {
-                        player.AddBuff(BuffID.Chilled, 5);
-                    }
-                }
-            }
-            if (playerGimmick == GimmickID.hermit)
-            {
-                int nearbyPlayerCount = 0;
-                foreach (Player p in Main.player)
-                {
-                    float distance = (p.position - player.position).LengthSquared();
-                    if (distance < 1000000)
-                    {
-                        nearbyPlayerCount++;
-                    }
-                }
-                if (nearbyPlayerCount > 1)
-                {
-                    if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
-                    if (!player.buffImmune[BuffID.Slow]) player.AddBuff(BuffID.Slow, 5);
-                    if (!player.buffImmune[BuffID.Wet]) player.AddBuff(BuffID.Wet, 5);
-                }
-            }
-            if (playerGimmick == GimmickID.claustrophobia)
-            {
-                if (player.behindBackWall)
-                {
-                    if (!player.buffImmune[BuffID.Horrified]) player.AddBuff(BuffID.Horrified, 5);
-                    if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
-                }
-            }
-
-
-            if (playerFaction == FactionID.dwarf && !player.ZoneDungeon)
-            {
-                if (player.ZoneOverworldHeight)
-                {
-                    if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
-                    if (!player.buffImmune[BuffID.Confused]) player.AddBuff(BuffID.Confused, 5);
-                    if (!player.buffImmune[BuffID.Slow]) player.AddBuff(BuffID.Slow, 5);
-                    if (!player.buffImmune[BuffID.Bleeding]) player.AddBuff(BuffID.Bleeding, 5);
-                }
-                if (player.ZoneSkyHeight)
-                {
-                    if (!player.buffImmune[BuffID.Suffocation]) player.AddBuff(BuffID.Suffocation, 5);
-                    if (!player.buffImmune[BuffID.Slow]) player.AddBuff(BuffID.Slow, 5);
-                }
-            }
-            if (playerFaction == FactionID.elf && !player.ZoneJungle && !player.ZoneDungeon)
-            {
-                if (player.ZoneDirtLayerHeight)
-                {
-                    if (!player.buffImmune[BuffID.Darkness]) player.AddBuff(BuffID.Darkness, 5);
-                    if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
-                }
-                else if (player.ZoneRockLayerHeight)
-                {
-                    if (!player.buffImmune[BuffID.Blackout]) player.AddBuff(BuffID.Blackout, 5);
-                    if (!player.buffImmune[BuffID.Bleeding]) player.AddBuff(BuffID.Bleeding, 5);
-                    if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
-                }
-                else if (player.ZoneUnderworldHeight)
-                {
-                    if (!player.buffImmune[BuffID.Horrified]) player.AddBuff(BuffID.Horrified, 5);
-                    if (!player.buffImmune[BuffID.Bleeding]) player.AddBuff(BuffID.Bleeding, 5);
-                    if (!player.fireWalk)
-                    {
-                        player.AddBuff(BuffID.Burning, 5);
-                    }
-                }
-            }
-
         }
 
+        private void GimmickUpdates()
+        {
+            if (!multicultured)
+            {
+                if (playerGimmick == GimmickID.vampire)
+                {
+                    /*
+                    Main.NewText("player zoneunderworldheight " + player.ZoneUnderworldHeight);
+                    Main.NewText("player zonerocklayerheight " + player.ZoneRockLayerHeight);
+                    Main.NewText("player zonedirtlayerheight " + player.ZoneDirtLayerHeight);
+                    Main.NewText("player zoneoverworldheight " + player.ZoneOverworldHeight);
+                    Main.NewText("player zoneskylayerheight" + player.ZoneSkyHeight);
+                    */
+                    if (!player.behindBackWall && Main.dayTime && player.ZoneOverworldHeight && !player.ZoneRain && !Main.eclipse)
+                    {
+                        if (!player.buffImmune[BuffID.OnFire])
+                        {
+                            player.AddBuff(BuffID.OnFire, 5);
+                        }
+                    }
+                }
+                if (playerGimmick == GimmickID.aquaphobia)
+                {
+                    player.breathMax = 10;
+                    if (player.ZoneRain && player.ZoneOverworldHeight)
+                    {
+                        if (!player.buffImmune[BuffID.Chilled])
+                        {
+                            player.AddBuff(BuffID.Chilled, 5);
+                        }
+                    }
+                }
+                if (playerGimmick == GimmickID.hermit)
+                {
+                    int nearbyPlayerCount = 0;
+                    foreach (Player p in Main.player)
+                    {
+                        float distance = (p.position - player.position).LengthSquared();
+                        if (distance < 1000000)
+                        {
+                            nearbyPlayerCount++;
+                        }
+                    }
+                    if (nearbyPlayerCount > 1)
+                    {
+                        if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
+                        if (!player.buffImmune[BuffID.Slow]) player.AddBuff(BuffID.Slow, 5);
+                        if (!player.buffImmune[BuffID.Wet]) player.AddBuff(BuffID.Wet, 5);
+                    }
+                }
+                if (playerGimmick == GimmickID.claustrophobia)
+                {
+                    if (player.behindBackWall)
+                    {
+                        if (!player.buffImmune[BuffID.Horrified]) player.AddBuff(BuffID.Horrified, 5);
+                        if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
+                    }
+                }
+            }
+        }
+
+        public override void UpdateBadLifeRegen()
+        {
+            base.UpdateBadLifeRegen();
+            if (playerGimmick == GimmickID.aquaphobia && player.wet)
+            {
+                if (player.lifeRegen > 0)
+                {
+                    player.lifeRegen = 0;
+                }
+                player.lifeRegenTime = 0;
+                player.lifeRegen -= 5;
+            }
+        }
     }
 
     class ClassID

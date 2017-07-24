@@ -34,9 +34,9 @@ namespace tgmod.Commands
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
-
-            caller.Player.KillMe(Terraria.DataStructures.PlayerDeathReason.ByCustomReason(caller.Player.name + "rerolled :^)"), 9999, 0);
-            caller.Player.KillMeForGood();
+            //caller.Player.KillMeForGood();
+            caller.Player.KillMe(Terraria.DataStructures.PlayerDeathReason.ByCustomReason(caller.Player.name + " rerolled :^)"), 9999, 0);
+            
             /*
             tgplayer newPlayer = caller.Player.GetModPlayer<tgplayer>();
             if (newPlayer.playerRace != RaceID.human)
