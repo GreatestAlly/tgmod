@@ -3,4 +3,4 @@ author = GreatestAlly
 version = 0.3.7.2
 displayName = /tg/ mod
 
-buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, .git\*
+buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, .git\*, *.md
