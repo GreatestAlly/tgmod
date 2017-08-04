@@ -30,7 +30,7 @@ namespace tgmod.Tiles
         {
             Player player = Main.LocalPlayer;
             player.GetModPlayer<tgplayer>().inNeutralZone = true;
-            player.AddBuff(mod.BuffType<Buffs.FactionNeutral>(), 10);
+            player.AddBuff(mod.BuffType<Buffs.FactionNeutral>(), 30);
             base.NearbyEffects(i, j, closer);
         }
     }

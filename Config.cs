@@ -42,7 +42,7 @@ namespace tgmod
         static void CreateConfig()
         {
             Configuration.Clear();
-            Configuration.Put("forceRolling", true);
+            Configuration.Put("forceRolling", forceRolling);
             Configuration.Save();
         }
     }

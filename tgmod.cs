@@ -86,7 +86,6 @@ namespace tgmod
                     ErrorLogger.Log("tgmod: Unknown Message Type: " + msgType);
                     break;
             }
-            base.HandlePacket(reader, whoAmI);
         }
     }
 }

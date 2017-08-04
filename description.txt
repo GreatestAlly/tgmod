@@ -2,20 +2,15 @@
 
 Mod ideas from /tg/. 
 
-Remove the Wand items that place blocks and just have the blocks be craftable holy shit why even bother making a Bone Wand and then mining the placed bones gives you Bone Blocks just have the blocks themselves
-Crafting recipes would be as simple as
-Wood > Living Wood Block
-Wood > Living Leaf Block
-Rich Mahogany > Living Mahogany Block
-Rich Mahogany > Living Mahogany Leaf Block
-Bone > Bone Block
-
-
-Remove light given off by teleporters
-
-Extra Fishing Lines x1/x2/x4/x9/x19
+https://github.com/GreatestAlly/tgmod/wiki
 
 Version History:
+<v0.3.10.3>
+Fixed elven blessing buff having brief moments where the buff is not applied even when around grass blocks. 
+
+<v0.3.10.2>
+Actually sending the name change packet. wew lad
+
 <v0.3.10.1>
 Test build for config server syncing and name change broadcast. 
 

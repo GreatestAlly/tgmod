@@ -51,6 +51,7 @@ namespace tgmod.Commands
                 netMessage.Write((byte)tgmodMessageType.NameChange);
                 netMessage.Write(caller.Player.name);
                 netMessage.Write(newName);
+                netMessage.Send();
                 //NetworkText text = NetworkText.FromLiteral(caller.Player.name + " has changed their name to " + newName + ".");
                 //NetMessage.BroadcastChatMessage(text, new Color(255, 25, 25));
             }

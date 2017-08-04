@@ -1,6 +1,6 @@
 author = GreatestAlly
 
-version = 0.3.10.1
+version = 0.3.10.3
 displayName = /tg/ mod
 
 weakReferences = ThoriumMod@1.4.0.0

@@ -17,7 +17,7 @@ namespace tgmod.Tiles
                         (type >= TileID.GreenMoss && type <= TileID.LongMoss))
                     {
                         player.GetModPlayer<tgplayer>().elvenBlessing = true;
-                        player.AddBuff(mod.BuffType<Buffs.ElvenBlessing>(), 10);
+                        player.AddBuff(mod.BuffType<Buffs.ElvenBlessing>(), 30);
                     }
                 }
             }
