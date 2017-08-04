@@ -10,11 +10,15 @@ namespace tgmod.Tiles
         {
             if (closer)
             {
-                if (type == TileID.Grass || type == TileID.JungleGrass || type == TileID.MushroomGrass || type == TileID.HallowedGrass ||
-                    (type >= TileID.GreenMoss && type <= TileID.LongMoss))
+                Player player = Main.LocalPlayer;
+                if (player.GetModPlayer<tgplayer>().playerFaction == FactionID.elf)
                 {
-                    Player player = Main.LocalPlayer;
-                    player.AddBuff(mod.BuffType<Buffs.ElvenBlessing>(), 5);
+                    if (type == TileID.Grass || type == TileID.JungleGrass || type == TileID.MushroomGrass || type == TileID.HallowedGrass ||
+                        (type >= TileID.GreenMoss && type <= TileID.LongMoss))
+                    {
+                        player.GetModPlayer<tgplayer>().elvenBlessing = true;
+                        player.AddBuff(mod.BuffType<Buffs.ElvenBlessing>(), 10);
+                    }
                 }
             }
             base.NearbyEffects(i, j, type, closer);

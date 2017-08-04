@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
@@ -47,6 +46,22 @@ namespace tgmod
 
         public override void PostUpdateEquips()
         {
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                if (!Config.netSynced)
+                {
+                    var netMessage = mod.GetPacket();
+                    netMessage.Write((byte)tgmodMessageType.ConfigSyncRequest);
+                    netMessage.Send();
+                }
+            }
+            if (Config.forceRolling)
+            {
+                if (playerClass == ClassID.classless || playerFaction == FactionID.human || playerGimmick == GimmickID.gimmickless)
+                {
+                    player.AddBuff(BuffID.Frozen, 5);
+                }
+            }
             ZoneUpdates();
             ClassDamageModifications();
             GimmickUpdates();
@@ -86,6 +101,8 @@ namespace tgmod
                 {
                     if (!player.buffImmune[BuffID.Suffocation]) player.AddBuff(BuffID.Suffocation, 5);
                     if (!player.buffImmune[BuffID.Slow]) player.AddBuff(BuffID.Slow, 5);
+                    if (!player.buffImmune[BuffID.Bleeding]) player.AddBuff(BuffID.Bleeding, 5);
+                    if (!player.buffImmune[BuffID.Poisoned]) player.AddBuff(BuffID.Poisoned, 5);
                 }
             }
             if (playerFaction == FactionID.elf && !elvenBlessing)
@@ -117,13 +134,12 @@ namespace tgmod
 
         private void ClassDamageModifications()
         {
+
             // first deal with classes and the damage buffs/debuffs that come with them
             if (playerClass != ClassID.classless)
             {
                 player.meleeDamage -= damageLoss;
-                player.arrowDamage -= damageLoss;
-                player.bulletDamage -= damageLoss;
-                player.rocketDamage -= damageLoss;
+                player.rangedDamage -= damageLoss;
                 player.magicDamage -= damageLoss;
                 player.minionDamage -= damageLoss;
                 player.thrownDamage -= damageLoss;
@@ -142,10 +158,22 @@ namespace tgmod
             }
             if (playerClass == ClassID.archer)
             {
+                // allowing ranged classes to use ranged weapons that aren't arrow, bullet or rocket based
+                player.rangedDamage += damageLoss;
+                player.arrowDamage -= damageLoss;
+                player.bulletDamage -= damageLoss;
+                player.rocketDamage -= damageLoss;
+
                 player.arrowDamage += damageBoost;
             }
             if (playerClass == ClassID.gunner)
             {
+                // allowing ranged classes to use ranged weapons that aren't arrow, bullet or rocket based  
+                player.rangedDamage += damageLoss;
+                player.arrowDamage -= damageLoss;
+                player.bulletDamage -= damageLoss;
+                player.rocketDamage -= damageLoss;
+
                 player.bulletDamage += damageBoost;
                 player.rocketDamage += damageBoost;
             }
@@ -155,14 +183,27 @@ namespace tgmod
             }
             if (ModLoader.GetLoadedMods().Contains("ThoriumMod"))
             {
-                if (playerClass == ClassID.bard)
-                {
-                    player.magicDamage += damageLoss;
-                }
-                if (playerClass == ClassID.healer)
-                {
-                    player.magicDamage += damageLoss;
-                }
+                ThoriumClassDamageModifications();
+            }
+        }
+
+        private void ThoriumClassDamageModifications()
+        {
+            if (playerClass != ClassID.classless)
+            {
+                player.GetModPlayer<ThoriumMod.ThoriumPlayer>(ModLoader.GetMod("ThoriumMod")).radiantBoost -= damageLoss;
+                player.GetModPlayer<ThoriumMod.ThoriumPlayer>(ModLoader.GetMod("ThoriumMod")).symphonicDamage -= damageLoss;
+            }
+            if (playerClass == ClassID.bard)
+            {
+                player.GetModPlayer<ThoriumMod.ThoriumPlayer>(ModLoader.GetMod("ThoriumMod")).symphonicDamage += damageBoost;
+            }
+            if (playerClass == ClassID.healer)
+            {
+                // possible problems with there is -50% from class and -50% from armor for -100% magic damage, since healer items 
+                // have the item.magic field set to true
+                player.magicDamage += damageLoss; 
+                player.GetModPlayer<ThoriumMod.ThoriumPlayer>(ModLoader.GetMod("ThoriumMod")).radiantBoost += damageBoost;
             }
         }
 
@@ -170,59 +211,59 @@ namespace tgmod
         {
             if (!multicultured)
             {
-                if (playerGimmick == GimmickID.vampire)
+                switch (playerGimmick)
                 {
-                    /*
-                    Main.NewText("player zoneunderworldheight " + player.ZoneUnderworldHeight);
-                    Main.NewText("player zonerocklayerheight " + player.ZoneRockLayerHeight);
-                    Main.NewText("player zonedirtlayerheight " + player.ZoneDirtLayerHeight);
-                    Main.NewText("player zoneoverworldheight " + player.ZoneOverworldHeight);
-                    Main.NewText("player zoneskylayerheight" + player.ZoneSkyHeight);
-                    */
-                    if (!player.behindBackWall && Main.dayTime && player.ZoneOverworldHeight && !player.ZoneRain && !Main.eclipse)
-                    {
-                        if (!player.buffImmune[BuffID.OnFire])
+                    case GimmickID.vampire:
+                        if (!player.behindBackWall && Main.dayTime && player.ZoneOverworldHeight && !player.ZoneRain && !Main.eclipse)
                         {
-                            player.AddBuff(BuffID.OnFire, 5);
+                            if (!player.buffImmune[BuffID.OnFire])
+                            {
+                                player.AddBuff(BuffID.OnFire, 5);
+                            }
                         }
-                    }
-                }
-                if (playerGimmick == GimmickID.aquaphobia)
-                {
-                    player.breathMax = 10;
-                    if (player.ZoneRain && player.ZoneOverworldHeight)
-                    {
-                        if (!player.buffImmune[BuffID.Chilled])
+                        break;
+                    case GimmickID.aquaphobia:
+                        player.breathMax = 10;
+                        if (player.ZoneRain && player.ZoneOverworldHeight)
                         {
-                            player.AddBuff(BuffID.Chilled, 5);
+                            if (!player.buffImmune[BuffID.Chilled])
+                            {
+                                player.AddBuff(BuffID.Chilled, 5);
+                            }
                         }
-                    }
-                }
-                if (playerGimmick == GimmickID.hermit)
-                {
-                    int nearbyPlayerCount = 0;
-                    foreach (Player p in Main.player)
-                    {
-                        float distance = (p.position - player.position).LengthSquared();
-                        if (distance < 1000000)
+                        break;
+                    case GimmickID.hermit:
+                        int nearbyPlayerCount = 0;
+                        foreach (Player p in Main.player)
                         {
-                            nearbyPlayerCount++;
+                            if (p.active)
+                            {
+                                float distance = (p.position - player.position).LengthSquared();
+                                if (distance < 500 * 500)
+                                {
+                                    nearbyPlayerCount++;
+                                }
+                            }
                         }
-                    }
-                    if (nearbyPlayerCount > 1)
-                    {
-                        if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
-                        if (!player.buffImmune[BuffID.Slow]) player.AddBuff(BuffID.Slow, 5);
-                        if (!player.buffImmune[BuffID.Wet]) player.AddBuff(BuffID.Wet, 5);
-                    }
-                }
-                if (playerGimmick == GimmickID.claustrophobia)
-                {
-                    if (player.behindBackWall)
-                    {
-                        if (!player.buffImmune[BuffID.Horrified]) player.AddBuff(BuffID.Horrified, 5);
-                        if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
-                    }
+                        if (nearbyPlayerCount > 1)
+                        {
+                            if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
+                            if (!player.buffImmune[BuffID.Slow]) player.AddBuff(BuffID.Slow, 5);
+                            if (!player.buffImmune[BuffID.Wet]) player.AddBuff(BuffID.Wet, 5);
+                        }
+                        break;
+                    case GimmickID.claustrophobia:
+                        if (player.behindBackWall)
+                        {
+                            if (!player.buffImmune[BuffID.Horrified]) player.AddBuff(BuffID.Horrified, 5);
+                            if (!player.buffImmune[BuffID.Weak]) player.AddBuff(BuffID.Weak, 5);
+                        }
+                        break;
+                    case GimmickID.acrophobia:
+                        break;
+                    default:
+                        break;
+
                 }
             }
         }
@@ -231,6 +272,15 @@ namespace tgmod
         {
             base.UpdateBadLifeRegen();
             if (playerGimmick == GimmickID.aquaphobia && player.wet)
+            {
+                if (player.lifeRegen > 0)
+                {
+                    player.lifeRegen = 0;
+                }
+                player.lifeRegenTime = 0;
+                player.lifeRegen -= 5;
+            }
+            if (playerGimmick == GimmickID.acrophobia && Math.Abs(player.velocity.Y) > 5)
             {
                 if (player.lifeRegen > 0)
                 {
@@ -261,6 +311,8 @@ namespace tgmod
         {
             switch (playerClass)
             {
+                case 0:
+                    return "classless";
                 case 1:
                     return "Swordsman";
                 case 2:
@@ -280,7 +332,7 @@ namespace tgmod
                 case 9:
                     return "Bard";
                 default:
-                    return "classless";
+                    return "Class display values need an update";
             }
         }
     }
@@ -292,12 +344,15 @@ namespace tgmod
         public const short aquaphobia = 2;
         public const short hermit = 3;
         public const short claustrophobia = 4;
-        public const short gimmickMaxValue = 4;
+        public const short acrophobia = 5;
+        public const short gimmickMaxValue = 5;
 
         public static string GetGimmickName(int playerGimmick)
         {
             switch (playerGimmick)
             {
+                case 0:
+                    return "have no gimmick";
                 case 1:
                     return "are a vampire";
                 case 2:
@@ -306,8 +361,10 @@ namespace tgmod
                     return "are a hermit";
                 case 4:
                     return "have claustrophobia";
+                case 5:
+                    return "have acrophobia";
                 default:
-                    return "have no gimmick";
+                    return "Gimmick display values need an update";
             }
         }
     }
@@ -323,12 +380,14 @@ namespace tgmod
         {
             switch (playerFaction)
             {
+                case 0:
+                    return "human";
                 case 1:
                     return "elf";
                 case 2:
                     return "dwarf";
                 default:
-                    return "human";
+                    return "Faction display values need an update";
             }
         }
     }

@@ -35,6 +35,7 @@ namespace tgmod.Items.Placeable
             recipe.AddIngredient(ItemID.HellstoneBrick, 50);
             recipe.AddTile(TileID.SkyMill);
             recipe.AddTile(TileID.Hellforge);
+            recipe.SetResult(this);
             recipe.AddRecipe();
         }
     }

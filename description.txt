@@ -16,6 +16,38 @@ Remove light given off by teleporters
 Extra Fishing Lines x1/x2/x4/x9/x19
 
 Version History:
+<v0.3.10.1>
+Test build for config server syncing and name change broadcast. 
+
+<v0.3.10.0>
+Added a config for the option to freeze players that have not rolled. 
+Added an item to (hopefully) start sandstorms. 
+
+<v0.3.9.1>
+Removed debug messages accidentally left over from testing.
+
+<v0.3.9.0>
+Fixed Acrophobia not being displayed properly.
+Classes now affect Symphonic and Radiant damage when Thorium is loaded. 
+Healer class still has 100% magic damage to deal with the bugs that occur when the player has 0% magic damage.
+Only ranged classes (archer/gunner) have normal damage with non-specific ranged weapons (e.g. harpoon, dart rifle/pistol). All other classes have -50% damage.   
+
+<v0.3.8.2>
+Hermit gimmick now only checks for active players.
+
+
+<v0.3.8.1>
+Fixed the rolling command crashing when no inputs were given. 
+Added recipe for crafting books with leather and wallpaper. 
+
+<v0.3.8.0>
+Extra fishing lines no longer function in vanity, and do not function at all in conjunction with the UnuBattleRods mod. 
+Fixed description texts for extra fishing lines. 
+Reworked faction debuffs to be more harsh outside of "comfort zones". 
+New Gimmick: Acrophobia. Negative health regen at high vertical velocities. 
+Rolling command now takes in a single argument for the player to choose their faction. 
+Neutral zones negate faction debuffs. Statue to create a small neutral zone. 
+Elves no longer recieve faction debuffs when in presence of flora. 
 
 <v0.3.7.2>
 Removed debug commands. 

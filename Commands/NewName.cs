@@ -1,5 +1,6 @@
 ﻿using Terraria.ModLoader;
 using Terraria;
+using Terraria.ID;
 
 namespace tgmod.Commands
 {
@@ -40,7 +41,19 @@ namespace tgmod.Commands
         public override void Action(CommandCaller caller, string input, string[] args)
         {
             string newName = input.Substring("/newname ".Length);
-            Main.NewText(caller.Player.name + " has changed their name to " + newName);
+            if (Main.netMode == NetmodeID.SinglePlayer)
+            {
+                Main.NewText(caller.Player.name + " has changed their name to " + newName);
+            }
+            else if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                var netMessage = mod.GetPacket();
+                netMessage.Write((byte)tgmodMessageType.NameChange);
+                netMessage.Write(caller.Player.name);
+                netMessage.Write(newName);
+                //NetworkText text = NetworkText.FromLiteral(caller.Player.name + " has changed their name to " + newName + ".");
+                //NetMessage.BroadcastChatMessage(text, new Color(255, 25, 25));
+            }
             caller.Player.name = newName;
         }
     }

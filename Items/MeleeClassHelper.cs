@@ -27,6 +27,18 @@ namespace tgmod.Items
                 }
             }
 
+            // for debug purposes
+            /*
+            if (ModLoader.GetLoadedMods().Contains("ThoriumMod"))
+            {
+                if (item.magic)
+                {
+                    Main.NewText("Found Item: " + item.Name);
+                    Main.NewText("Item Width: " + item.width);
+                }
+            }
+            */
+
             base.GetWeaponDamage(item, player, ref damage);
         }
     }

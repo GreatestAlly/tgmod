@@ -48,13 +48,16 @@ namespace tgmod.Commands
                 newPlayer.playerClass = Main.rand.Next(1, ClassID.classMaxValue + 1);
             }
 
-            if (args[0] == "elf")
+            if (args.Length > 0)
             {
-                newPlayer.playerFaction = FactionID.elf;
-            }
-            else if (args[0] == "dwarf")
-            {
-                newPlayer.playerFaction = FactionID.dwarf;
+                if (args[0] == "elf")
+                {
+                    newPlayer.playerFaction = FactionID.elf;
+                }
+                else if (args[0] == "dwarf")
+                {
+                    newPlayer.playerFaction = FactionID.dwarf;
+                }
             }
             else
             {

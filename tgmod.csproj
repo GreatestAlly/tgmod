@@ -33,13 +33,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Buffs\ElvenBlessing.cs" />
+    <Compile Include="Buffs\FactionNeutral.cs" />
+    <Compile Include="Buffs\Multiculturalism.cs" />
     <Compile Include="Commands\DisplayClass.cs" />
     <Compile Include="Commands\DisplayGimmick.cs" />
     <Compile Include="Commands\DisplayFaction.cs" />
     <Compile Include="Commands\NewName.cs" />
     <Compile Include="Commands\Rerolling.cs" />
     <Compile Include="Commands\RollingCommand.cs" />
-    <Compile Include="ElvenBlessing.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Items\Armor\ExtraLine.cs" />
     <Compile Include="Items\Armor\ExtraLine19.cs" />
     <Compile Include="Items\Armor\ExtraLine2.cs" />
@@ -53,7 +56,8 @@
     <Compile Include="Items\Placeable\LivingMahoganyLeafBlock.cs" />
     <Compile Include="Items\Placeable\LivingMahoganyWoodBlock.cs" />
     <Compile Include="Items\Placeable\LivingWoodBlock.cs" />
-    <Compile Include="NPCs\AnglerShop.cs" />
+    <Compile Include="Items\Placeable\NeutralityStatue.cs" />
+    <Compile Include="Items\SandstormSummon.cs" />
     <Compile Include="NPCs\PartyGirl.cs" />
     <Compile Include="tgmod.cs" />
     <Compile Include="tgplayer.cs" />
@@ -61,6 +65,7 @@
     <Compile Include="Tiles\ItemFrameServerCheat.cs" />
     <Compile Include="Tiles\LivingMahogany.cs" />
     <Compile Include="Tiles\LivingWood.cs" />
+    <Compile Include="Tiles\NeutralityTile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
@@ -83,8 +88,10 @@
     <Reference Include="Terraria">
       <HintPath>..\..\..\..\..\..\Desktop\New folder\Terraria\Terraria.exe</HintPath>
     </Reference>
+    <Reference Include="ThoruimMod_v1.2.13.3">
+      <HintPath>lib\ThoruimMod_v1.2.13.3.dll</HintPath>
+    </Reference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"C:\Program Files (x86)\Steam\steamapps\common\terraria\Terraria.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>

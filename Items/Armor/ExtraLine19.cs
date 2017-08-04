@@ -56,7 +56,10 @@ namespace tgmod.Items.Armor
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<tgplayer>().extraFishingLines += 19;
+            if (!ModLoader.GetLoadedMods().Contains("UnuBattleRods"))
+            {
+                player.GetModPlayer<tgplayer>().extraFishingLines += 19;
+            }
             base.UpdateAccessory(player, hideVisual);
         }
 

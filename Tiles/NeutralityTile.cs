@@ -23,13 +23,14 @@ namespace tgmod.Tiles
 
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
-            Item.NewItem(i * 16, j * 16, 32, 48, mod.ItemType("ClearEventFurniture"));
+            Item.NewItem(i * 16, j * 16, 32, 48, mod.ItemType("NeutralityStatue"));
         }
 
         public override void NearbyEffects(int i, int j, bool closer)
         {
             Player player = Main.LocalPlayer;
             player.GetModPlayer<tgplayer>().inNeutralZone = true;
+            player.AddBuff(mod.BuffType<Buffs.FactionNeutral>(), 10);
             base.NearbyEffects(i, j, closer);
         }
     }
