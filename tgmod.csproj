@@ -39,6 +39,7 @@
     <Compile Include="Commands\DisplayClass.cs" />
     <Compile Include="Commands\DisplayGimmick.cs" />
     <Compile Include="Commands\DisplayFaction.cs" />
+    <Compile Include="Commands\GreenText.cs" />
     <Compile Include="Commands\NewName.cs" />
     <Compile Include="Commands\Rerolling.cs" />
     <Compile Include="Commands\RollingCommand.cs" />
@@ -48,24 +49,35 @@
     <Compile Include="Items\Armor\ExtraLine2.cs" />
     <Compile Include="Items\Armor\ExtraLine4.cs" />
     <Compile Include="Items\Armor\ExtraLine9.cs" />
+    <Compile Include="Items\Armor\penetrator.cs" />
     <Compile Include="Items\DwarfFactionHelper.cs" />
     <Compile Include="Items\ExtraLinesHelper.cs" />
     <Compile Include="Items\MeleeClassHelper.cs" />
     <Compile Include="Items\PirateMapStacking.cs" />
+    <Compile Include="Items\Placeable\FishGrinder.cs" />
     <Compile Include="Items\Placeable\LivingLeafBlock.cs" />
     <Compile Include="Items\Placeable\LivingMahoganyLeafBlock.cs" />
     <Compile Include="Items\Placeable\LivingMahoganyWoodBlock.cs" />
     <Compile Include="Items\Placeable\LivingWoodBlock.cs" />
     <Compile Include="Items\Placeable\NeutralityStatue.cs" />
     <Compile Include="Items\SandstormSummon.cs" />
+    <Compile Include="Items\SashimiCrafting.cs" />
+    <Compile Include="Items\SwimBladder.cs" />
+    <Compile Include="Items\Weapons\Gau8.cs" />
+    <Compile Include="NPCs\AnglerKill.cs" />
+    <Compile Include="NPCs\goblinTinkerer.cs" />
     <Compile Include="NPCs\PartyGirl.cs" />
+    <Compile Include="NPCs\SoldSummonItems.cs" />
     <Compile Include="tgmod.cs" />
     <Compile Include="tgplayer.cs" />
     <Compile Include="Tiles\ElfFactionHelper.cs" />
+    <Compile Include="Tiles\FishGrinderHelper.cs" />
+    <Compile Include="Tiles\FishGrinderTile.cs" />
     <Compile Include="Tiles\ItemFrameServerCheat.cs" />
     <Compile Include="Tiles\LivingMahogany.cs" />
     <Compile Include="Tiles\LivingWood.cs" />
     <Compile Include="Tiles\NeutralityTile.cs" />
+    <Compile Include="Tiles\TrophyAsBanner.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">

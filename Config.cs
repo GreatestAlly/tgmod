@@ -8,7 +8,10 @@ namespace tgmod
 {
     public static class Config
     {
-        public static bool forceRolling = true;
+        public static int version = 2;
+        public static bool forceRolling = false;
+        public static bool sellSummons = true;
+        public static bool chooseClass = true;
         public static bool netSynced = false;
 
         static string ConfigPath = Path.Combine(Main.SavePath, "Mod Configs", "tgmod.json");
@@ -33,8 +36,15 @@ namespace tgmod
         {
             if (Configuration.Load())
             {
-                Configuration.Get("forceRolling", ref forceRolling);
-                return true;
+                int readVersion = 0;
+                Configuration.Get("version", ref readVersion);
+                if (readVersion == version)
+                {
+                    Configuration.Get("forceRolling", ref forceRolling);
+                    Configuration.Get("sellSummons", ref sellSummons);
+                    Configuration.Get("chooseClass", ref chooseClass);
+                    return true;
+                }
             }
             return false;
         }
@@ -42,7 +52,10 @@ namespace tgmod
         static void CreateConfig()
         {
             Configuration.Clear();
+            Configuration.Put("version", version);
             Configuration.Put("forceRolling", forceRolling);
+            Configuration.Put("sellSummons", sellSummons);
+            Configuration.Put("chooseClass", chooseClass);
             Configuration.Save();
         }
     }

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -57,7 +57,7 @@ namespace tgmod
             }
             if (Config.forceRolling)
             {
-                if (playerClass == ClassID.classless || playerFaction == FactionID.human || playerGimmick == GimmickID.gimmickless)
+                if (Main.myPlayer == player.whoAmI && (playerClass == ClassID.classless || playerFaction == FactionID.human || playerGimmick == GimmickID.gimmickless))
                 {
                     player.AddBuff(BuffID.Frozen, 5);
                 }
@@ -71,6 +71,10 @@ namespace tgmod
         private void ZoneUpdates()
         {
             if (player.position.Y > Main.spawnTileY * 16 - 50 * 16 && Math.Abs(player.position.X - Main.spawnTileX * 16) < 80 * 16)
+            {
+                inNeutralZone = true;
+            }
+            if (player.FindBuffIndex(mod.BuffType<Buffs.FactionNeutral>()) > 0)
             {
                 inNeutralZone = true;
             }
@@ -181,7 +185,7 @@ namespace tgmod
             {
                 player.thrownDamage += damageBoost;
             }
-            if (ModLoader.GetLoadedMods().Contains("ThoriumMod"))
+            if (tgmod.instance.thoriumLoaded)
             {
                 ThoriumClassDamageModifications();
             }
@@ -270,7 +274,10 @@ namespace tgmod
 
         public override void UpdateBadLifeRegen()
         {
-            base.UpdateBadLifeRegen();
+            if (multicultured)
+            {
+                return;
+            }
             if (playerGimmick == GimmickID.aquaphobia && player.wet)
             {
                 if (player.lifeRegen > 0)

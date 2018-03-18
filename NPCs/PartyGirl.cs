@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 
@@ -15,7 +10,10 @@ namespace tgmod.NPCs
         {
             if (npc.type == NPCID.PartyGirl)
             {
-                npc.GivenName = npc.GivenName + " (male)";
+                if (!npc.GivenName.EndsWith(")"))
+                {
+                    npc.GivenName = npc.GivenName + " (male)";
+                }
             }
         }
 
@@ -41,6 +39,15 @@ namespace tgmod.NPCs
             if (Main.rand.Next(10) == 0)
             {
                 chat = "Something something horsecock.";
+            }
+        }
+
+        public override void SetupShop(int type, Chest shop, ref int nextSlot)
+        {
+            if (type == NPCID.PartyGirl)
+            {
+                shop.item[nextSlot].SetDefaults(mod.ItemType<Items.Armor.penetrator>());
+                nextSlot++;
             }
         }
     }

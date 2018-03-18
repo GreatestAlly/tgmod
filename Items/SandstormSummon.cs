@@ -25,16 +25,21 @@ namespace tgmod.Items
             item.consumable = true;
         }
 
+        public override bool CanUseItem(Player player)
+        {
+            return !Terraria.GameContent.Events.Sandstorm.Happening;
+        }
+
         public override bool UseItem(Player player)
         {
             Terraria.GameContent.Events.Sandstorm.Happening = true;
             Terraria.GameContent.Events.Sandstorm.TimeLeft = (int)(3600.0 * (8.0 + (double)Main.rand.NextFloat() * 16.0));
             Terraria.GameContent.Events.Sandstorm.IntendedSeverity = !Terraria.GameContent.Events.Sandstorm.Happening ? (Main.rand.Next(3) != 0 ? Main.rand.NextFloat() * 0.3f : 0.0f) : 0.4f + Main.rand.NextFloat();
             if (Main.netMode == 1)
-                return base.UseItem(player);
+                return true;
             NetMessage.SendData(7, -1, -1, (NetworkText)null, 0, 0.0f, 0.0f, 0.0f, 0, 0, 0);
 
-            return base.UseItem(player);
+            return true;
         }
 
         public override void AddRecipes()
@@ -43,6 +48,7 @@ namespace tgmod.Items
 
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.SandBlock, 20);
+            recipe.AddIngredient(ItemID.SoulofFlight, 5);
             recipe.AddTile(TileID.DemonAltar);
             recipe.SetResult(this);
             recipe.AddRecipe();

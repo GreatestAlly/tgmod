@@ -1,8 +1,8 @@
 author = GreatestAlly
 
-version = 0.3.10.3
+version = 1.0.0.0
 displayName = /tg/ mod
 
 weakReferences = ThoriumMod@1.4.0.0
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, .git\*, *.md, lib\*
-homepage = https://github.com/GreatestAlly/tgmod
+homepage = https://github.com/GreatestAlly/tgmod/wiki

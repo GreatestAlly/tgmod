@@ -9,6 +9,9 @@ namespace tgmod
 {
 	class tgmod : Mod
 	{
+        internal bool thoriumLoaded;
+
+        static internal tgmod instance;
 
 		public tgmod()
 		{
@@ -23,6 +26,12 @@ namespace tgmod
         public override void Load()
         {
             Config.Load();
+            instance = this;
+        }
+
+        public override void PostSetupContent()
+        {
+            thoriumLoaded = ModLoader.GetMod("ThoriumMod") != null;
         }
 
         public override void PreSaveAndQuit()
@@ -72,6 +81,8 @@ namespace tgmod
                         var netMessage = GetPacket();
                         netMessage.Write((byte)tgmodMessageType.ConfigValues);
                         netMessage.Write(Config.forceRolling);
+                        netMessage.Write(Config.sellSummons);
+                        netMessage.Write(Config.chooseClass);
                         netMessage.Send();
                     }
                     break;
@@ -79,7 +90,18 @@ namespace tgmod
                     if (Main.netMode == NetmodeID.MultiplayerClient && !Config.netSynced)
                     {
                         Config.forceRolling = reader.ReadBoolean();
+                        Config.sellSummons = reader.ReadBoolean();
+                        Config.chooseClass = reader.ReadBoolean();
                         Config.netSynced = true;
+                    }
+                    break;
+                case tgmodMessageType.GreenText:
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        string name = reader.ReadString();
+                        string text = reader.ReadString();
+                        
+                        NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), new Color(0, 255, 0), -1);
                     }
                     break;
                 default:
@@ -94,5 +116,6 @@ enum tgmodMessageType : byte
 {
     NameChange,
     ConfigSyncRequest,
-    ConfigValues
+    ConfigValues,
+    GreenText
 }

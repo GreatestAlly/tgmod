@@ -5,6 +5,42 @@ Mod ideas from /tg/.
 https://github.com/GreatestAlly/tgmod/wiki
 
 Version History:
+<v1.0.0.0>
+Last version. Added new command (/>). Added a gun that has recoil.
+
+<v0.3.11.3>
+Added a config value to to allow players to roll for their class. 
+
+<v0.3.11.2>
+Summon items now cost money. Most are equivalent to the amount of money the boss bags drop. 
+Fish grinder now increases the player's quest completed count, so as to fully replace the angler. Quest completion count is capped at 150 for optimal item drop rate. 
+
+<v0.3.11.1>
+Added a fish grinder that drops from the angler. Toss quest fish into the grinder for fishing rewards. 
+
+<v0.3.11.0>
+Fixed the penetrator being sold by every single npc.
+Added summon items sold by npcs after defeating bosses/invasions as a config option.
+
+<v0.3.10.9>
+Added the penetrator.
+
+<v0.3.10.8>
+Hopefully fixed sashimi crafting loot bags. 
+
+<v0.3.10.7>
+Now added a chance to obtain a hook from the loot bags. 
+
+<v0.3.10.6>
+Fixed a bug where other player sprites are shown as frozen in multiplayer. 
+
+<v0.3.10.5>
+Added a loot bag that can be obtained when crafting sashimi. 
+
+<v0.3.10.4>
+Sandstorm summon can no longer be used while a sandstorm is ongoing. 
+Sandstorm summon crafting recipe changed to move the item to early hardmode. 
+
 <v0.3.10.3>
 Fixed elven blessing buff having brief moments where the buff is not applied even when around grass blocks. 
 

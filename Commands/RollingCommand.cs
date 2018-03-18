@@ -47,6 +47,16 @@ namespace tgmod.Commands
             {
                 newPlayer.playerClass = Main.rand.Next(1, ClassID.classMaxValue + 1);
             }
+            if (args.Length > 1)
+            {
+                for (int i = ClassID.classless + 1; i <= ClassID.classMaxValueThorium; i++)
+                {
+                    if (args[1] == ClassID.GetClassName(i))
+                    {
+                        newPlayer.playerClass = i;
+                    }
+                }
+            }
 
             if (args.Length > 0)
             {
